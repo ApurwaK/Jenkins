@@ -12,4 +12,17 @@
         "file"
     ]
 }
-
+{
+    "name": "John ",
+    "age": 20,
+    "address": {
+        "street": "123  St",
+        "city": "Anytown",
+        "state": "cb"
+    },
+    "tags": [
+        "example",
+        "json",
+        "file"
+    ]
+}
