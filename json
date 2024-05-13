@@ -18,7 +18,7 @@
     "address": {
         "street": "123  St",
         "city": "Anytown",
-        "state": "cb"
+        "state": "Bob"
     },
     "tags": [
         "example",
