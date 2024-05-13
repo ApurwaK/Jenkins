@@ -8,20 +8,21 @@ pipeline {
                 git 'https://github.com/ApurwaK/Jenkins.git'
             }
         }
-        stage('Lint JSON files') {
+        stage('Lint JSON Files') {
             steps {
-                // Install any necessary dependencies (e.g., jq for JSON parsing)
-                sh 'apt-get update && apt-get install -y jq'
-                
-                // Find JSON files and check indentation
                 script {
-                    def jsonFiles = sh(script: "git ls-files '*.json'", returnStdout: true).trim().split('\n')
-                    for (def file in jsonFiles) {
-                        def indentation = sh(script: "jq --indent 0 . $file | wc -l | xargs", returnStdout: true).trim().toInteger()
-                        if (indentation % 4 != 0) {
-                            error "Indentation error in file: $file"
-                        }
-                    }
+                    // Install jsonlint tool if not installed already
+                    tool name: 'jsonlint', type: 'com.cloudbees.jenkins.plugins.customtools.CustomToolInstallation'
+                    
+                    // Find JSON files and check their indentation
+                    sh 'find . -name "*.json" -exec ${JSONLINT_HOME}/bin/jsonlint --quiet --indent 4 {} \\; || exit 1'
+                }
+            }
+            post {
+                failure {
+                    // If indentation check fails, print an error message and exit with error status
+                    echo 'JSON indentation check failed!'
+                    error 'JSON indentation check failed!'
                 }
             }
         }
