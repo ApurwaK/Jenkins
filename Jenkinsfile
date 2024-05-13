@@ -4,23 +4,24 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Checkout your repository from GitHub
+                // Checkout the repository from GitHub
                 git 'https://github.com/ApurwaK/Jenkins.git'
             }
         }
         stage('Lint JSON files') {
             steps {
-                // Install any necessary dependencies
-                sh 'npm install -g jsonlint'
+                // Install any necessary dependencies (e.g., jq for JSON parsing)
+                sh 'apt-get update && apt-get install -y jq'
                 
-                // Run jsonlint command to check indentation
-                sh 'jsonlint --quiet --indent 4 *.json || exit 1'
-            }
-            post {
-                failure {
-                    // If indentation check fails, print an error message and exit with error status
-                    echo 'JSON indentation check failed!'
-                    error 'JSON indentation check failed!'
+                // Find JSON files and check indentation
+                script {
+                    def jsonFiles = sh(script: "git ls-files '*.json'", returnStdout: true).trim().split('\n')
+                    for (def file in jsonFiles) {
+                        def indentation = sh(script: "jq --indent 0 . $file | wc -l | xargs", returnStdout: true).trim().toInteger()
+                        if (indentation % 4 != 0) {
+                            error "Indentation error in file: $file"
+                        }
+                    }
                 }
             }
         }
