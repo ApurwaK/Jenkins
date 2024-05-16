@@ -20,8 +20,20 @@ pipeline {
         }
         stage('Lint JSON files') {
             steps {
-                // Run jsonlint command to check indentation
-                sh 'find . -name "*.json" -exec jsonlint --quiet --indent 4 {} \\;'
+                // Conditional execution based on operating system
+                script {
+                    if (isUnix()) {
+                        // Unix-specific command to find and lint JSON files
+                        sh 'find . -name "*.json" -exec jsonlint --quiet --indent 4 {} \\;'
+                    } else {
+                        // Windows-specific command to find and lint JSON files
+                        bat '''
+                        for /R %%i in (*.json) do (
+                            jsonlint --quiet --indent 4 "%%i" || exit /b 1
+                        )
+                        '''
+                    }
+                }
             }
             post {
                 failure {
