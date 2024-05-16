@@ -1,20 +1,33 @@
 pipeline {
     agent any
-
+    
+    tools {
+        nodejs 'Recent node' // Use the NodeJS installation configured in Jenkins
+    }
+    
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                echo 'Building..'
+                git 'https://github.com/ApurwaK/Jenkins.git'
             }
         }
-        stage('Test') {
+        stage('Install JSONLint') {
             steps {
-                echo 'Testing..'
+                // JSONLint should already be installed globally, so this step is just for demonstration
+                 sh 'npm install -g jsonlint' // This line can be omitted if configured globally
+                echo 'JSONLint is assumed to be installed globally'
             }
         }
-        stage('Deploy') {
+        stage('Lint JSON files') {
             steps {
-                echo 'Deploying....'
+                // Run jsonlint command to check indentation
+                sh 'find . -name "*.json" -exec jsonlint --quiet --indent 4 {} \\;'
+            }
+            post {
+                failure {
+                    echo 'JSON indentation check failed!'
+                    error 'JSON indentation check failed!'
+                }
             }
         }
     }
