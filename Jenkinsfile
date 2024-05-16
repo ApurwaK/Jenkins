@@ -14,7 +14,7 @@ pipeline {
         stage('Install JSONLint') {
             steps {
                 // JSONLint should already be installed globally, so this step is just for demonstration
-                 sh 'npm install -g jsonlint' // This line can be omitted if configured globally
+                 //sh 'npm install -g jsonlint' // This line can be omitted if configured globally
                 echo 'JSONLint is assumed to be installed globally'
             }
         }
