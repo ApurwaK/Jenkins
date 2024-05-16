@@ -1,28 +1,30 @@
-{
-    "name": "John Doe",
-    "age": 30,
-    "address": {
-        "street": "123 Main St",
-        "city": "Anytown",
-        "state": "CA"
+[
+    {
+        "name": "John Doe",
+        "age": 30,
+        "address": {
+            "street": "123 Main St",
+            "city": "Anytown",
+            "state": "CA"
+        },
+        "tags": [
+            "example",
+            "json",
+            "file"
+        ]
     },
-    "tags": [
-        "example",
-        "json",
-        "file"
-    ]
-}
-{
-    "name": "John ",
-    "age": 20,
-    "address": {
-        "street": "123  St",
-        "city": "Anytown",
-        "state": "Bob"
-    },
-    "tags": [
-        "example",
-        "json",
-        "file"
-    ]
-}
+    {
+        "name": "John",
+        "age": 20,
+        "address": {
+            "street": "123 St",
+            "city": "Anytown",
+            "state": "Bob"
+        },
+        "tags": [
+            "example",
+            "json",
+            "file"
+        ]
+    }
+]
